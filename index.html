@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in - Google Accounts</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="login-card">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="left-section">
+                <div class="logo">
+                    <img src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png" alt="Google logo">
+                </div>
+                <h1 id="headerTitle">Sign in</h1>
+                <p class="subtitle" id="headerSubtitle">Use your Google Account</p>
+            </div>
+
+            <div class="right-section">
+                <form id="loginForm">
+                    <!-- Step 1: Email -->
+                    <div id="emailStep">
+                        <div class="input-container">
+                            <input type="email" id="email" name="email" placeholder=" " required>
+                            <label for="email">Email or phone</label>
+                        </div>
+                        <div class="forgot-link">
+                            <a href="#">Forgot email?</a>
+                        </div>
+                        <p class="terms-text">Not your computer? Use Guest mode to sign in privately. <a href="#">Learn more</a></p>
+                    </div>
+
+                    <!-- Step 2: Password (Initially hidden) -->
+                    <div id="passwordStep" style="display: none;">
+                        <div class="input-container">
+                            <input type="password" id="password" name="password" placeholder=" " required>
+                            <label for="password">Enter your password</label>
+                        </div>
+                        <div class="forgot-link">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <div class="footer-left">
+                            <a href="#" class="create-account">Create account</a>
+                        </div>
+                        <div class="footer-right">
+                            <button type="button" id="nextBtn" class="primary-btn">Next</button>
+                            <button type="submit" id="submitBtn" class="primary-btn" style="display: none;">Next</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="responseMessage" class="response-message"></div>
+            </div>
+        </div>
+
+        <div class="page-footer">
+            <div class="footer-links">
+                <select id="language-selector">
+                    <option value="en">English (United States)</option>
+                </select>
+                <div class="links">
+                    <a href="#">Help</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
